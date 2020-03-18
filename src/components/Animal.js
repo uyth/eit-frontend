@@ -77,15 +77,18 @@ class Animal extends Component {
       className={(inventory.includes(item.id) ? '' : 'notBought ') + ("item_" + item.cat)}
       style={{width:'40vw', maxWidth:'160px'}}>
         <CardHeader title={item["name"]}/>
-        <CardMedia style={{height: 0, paddingTop: '56.25%', backgroundSize:'contain'}} image={this.props.server+"public/"+item["id"]+".png"}></CardMedia>
+        <CardMedia style={{height: 0, paddingTop: '56.25%', backgroundSize:'contain'}} image={this.props.server+"public/"+item["id"]+".png"} className={this.state.user.active.id === item.id ? "activeItem" : ''}></CardMedia>
           <CardContent>
             {/* Pris: {item["price"]}*/}
-                <Chip variant="outlined" color="primary" label={item.price + " poeng"}/>
+
+                {this.state.user.active.id === item.id ? <Chip color="primary" label="Active"/> : <Chip variant="outlined" color="primary" label={item.price + " poeng"}/>}
           </CardContent>
         <CardActions>
         {
             inventory.includes(item.id) ?
-            <Button size="small" color="primary">Velg</Button> :
+            <Button size="small" color="primary"
+            disabled={this.state.user.active.id === item.id}
+            onClick={() => {this.postApi('api/forest/place-animal',{'uid': this.state.user.id, 'itemid': item.id})}}>Velg</Button> :
             <Button size="small" color="primary" disabled={this.state.user.points < item.price} onClick={() => {this.postApi('api/users/give-item',{'userid': this.state.user.id, 'itemid': item.id})}}>Kjøp</Button>
         }
         </CardActions>
