@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Redirect } from 'react-router-dom';
+import { Snackbar, SnackbarContent } from '@material-ui/core';
 
 
 class Login extends Component {
@@ -12,7 +13,7 @@ class Login extends Component {
 		this.state = {
 			loggedIn: false,
 			hasRegistered: false,
-			registerError: false,
+			showError: false,
 			showLogin: false,
 			showRegister: false
 		}
@@ -27,9 +28,11 @@ class Login extends Component {
 		fetch(url+"?username="+items["username"], {
 			method: httpMethod,
 		}).then(res => {
+            console.log("HER ER JEG")
 			if (res.status === 500) {
 				res.json().then(data => {
-					this.setState({error: data.error})
+					this.setState({error: data.error, showError: true
+                    }, () => {console.log(this.state)})
 				});
 			}else {
 				res.json().then(data => {
@@ -64,6 +67,9 @@ class Login extends Component {
 			>
 				Logg inn
 			</Button>
+            <Snackbar open={this.state.showError} autoHideDuration={6000}>
+                <SnackbarContent message={this.state.error}/>
+            </Snackbar>
 		</div>
 		)
 	}
