@@ -8,6 +8,11 @@
 .notBought::after {
     content:'🔒';
     position: absolute;
-    left:50%;
-    top:50%;
+    left: 50%;
+    top: 42%;
+    font-size: 32px;
+}
+
+.MuiCardMedia-root {
+    transition: filter 1s;
 }
