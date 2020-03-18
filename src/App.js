@@ -38,6 +38,13 @@ const useStyles = makeStyles({
 });
 
 
+function heartbeatApi(uid) {
+  let date = new Date().getTime();
+  fetch(SERVER_URL+"api/heartbeat?uid="+uid+"&date="+date, {method: "POST"}).then(res => {
+    res.json().then(data => console.log(data))}  
+  )
+}
+
 function App() {
 
   const handleMenuChange = (event, newValue) => {
@@ -58,7 +65,14 @@ function App() {
   const signinHandler = (bruker) => {
     localStorage.setItem("bruker", JSON.stringify(bruker));
     setBruker(bruker);
+    heartbeatApi(bruker.id);
   }
+
+  setInterval(() => {
+    if (bruker != {}) {
+      heartbeatApi(bruker.id)
+    }
+  }, 60000);
 
   const MainScreen = <div className="App">
     <AppBar position="static">
