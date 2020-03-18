@@ -79,9 +79,7 @@ class Animal extends Component {
         <CardHeader title={item["name"]}/>
         <CardMedia style={{height: 0, paddingTop: '56.25%', backgroundSize:'contain'}} image={this.props.server+"public/"+item["id"]+".png"} className={this.state.user.active.id === item.id ? "activeItem" : ''}></CardMedia>
           <CardContent>
-            {/* Pris: {item["price"]}*/}
-
-                {this.state.user.active.id === item.id ? <Chip color="primary" label="Active"/> : <Chip variant="outlined" color="primary" label={item.price + " poeng"}/>}
+                {this.state.user.active.id === item.id ? <Chip color="primary" label="Valgt"/> : <Chip variant="outlined" color='primary' label={item.price + " poeng"}/>}
           </CardContent>
         <CardActions>
         {
