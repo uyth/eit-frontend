@@ -53,7 +53,7 @@ function App() {
   const [value, setValue] = useState("home");
 
   const classes = useStyles();
-  
+
   const [bruker, setBruker] = useState(
     JSON.parse(localStorage.getItem("bruker")) || {}
   );
@@ -83,29 +83,6 @@ function App() {
       </Toolbar>
     </AppBar>
     <Router>
-      <BottomNavigation value={value} onChange={handleMenuChange} showLabels className={classes.stickToBottom}>
-      <BottomNavigationAction 
-        component={Link}
-        to="/"
-        label="Home"
-        value="home"
-        icon={<HomeIcon/>}
-      />
-      <BottomNavigationAction 
-        component={Link}
-        to="/dyr"
-        label="Dyr"
-        value="customize"
-        icon={<PetsIcon/>}
-      />
-      <BottomNavigationAction 
-        component={Link}
-        to="/login"
-        label="Login"
-        value="login"
-        icon={<PersonIcon/>}
-      />
-    </BottomNavigation>
 
       {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
@@ -120,6 +97,29 @@ function App() {
           <Home bruker={bruker} server={SERVER_URL} className="display"/>
         </Route>
       </Switch>
+      <BottomNavigation value={value} onChange={handleMenuChange} showLabels className={classes.stickToBottom}>
+      <BottomNavigationAction
+      component={Link}
+      to="/"
+      label="Home"
+      value="home"
+      icon={<HomeIcon/>}
+      />
+      <BottomNavigationAction
+      component={Link}
+      to="/dyr"
+      label="Dyr"
+      value="customize"
+      icon={<PetsIcon/>}
+      />
+      <BottomNavigationAction
+      component={Link}
+      to="/login"
+      label="Login"
+      value="login"
+      icon={<PersonIcon/>}
+      />
+      </BottomNavigation>
   </Router>
   </div>;
 

@@ -1,0 +1,22 @@
+.notBought > .MuiCardMedia-root {
+    filter: grayscale(1) opacity(0.5);
+    /* filter: opacity(0.5); */
+}
+.notBought {
+    position: relative;
+}
+.notBought::after {
+    content:'🔒';
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    font-size: 32px;
+}
+
+.MuiCardMedia-root {
+    transition: filter 1s;
+}
+
+.activeItem {
+    filter: drop-shadow(2px 4px 6px #9e9e9e);
+}
