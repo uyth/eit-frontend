@@ -2,12 +2,10 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { Card, CardHeader } from "@material-ui/core";
 
-const SERVER_URL = "http://10.22.81.241:3000/"
-
 function Home(props) {
     return props.bruker?.id ?
       <div>
-        <img src={SERVER_URL +"public/"+props.bruker.active.id+".png"}/>
+        <img src={props.server +"public/"+props.bruker.active.id+".png"}/>
         <Card>
           <CardHeader></CardHeader>
         </Card>

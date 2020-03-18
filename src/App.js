@@ -19,6 +19,8 @@ import Login from './components/Login/Login';
 import Home from './components/Home';
 import Animal from './components/Animal';
 
+const SERVER_URL = "http://localhost:3000/"
+
 const useStyles = makeStyles({
   stickToBottom: {
     width: '100%',
@@ -95,13 +97,13 @@ function App() {
           renders the first one that matches the current URL. */}
       <Switch>
         <Route path="/dyr">
-          <Animal bruker={bruker} className="display"/>
+          <Animal bruker={bruker} server={SERVER_URL} className="display"/>
         </Route>
         <Route path="/login">
-          <Login handler={signinHandler} className="display"/>
+          <Login handler={signinHandler} server={SERVER_URL} className="display"/>
         </Route>
         <Route path="/">
-          <Home bruker={bruker} className="display"/>
+          <Home bruker={bruker} server={SERVER_URL} className="display"/>
         </Route>
       </Switch>
   </Router>

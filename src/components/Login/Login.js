@@ -5,8 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import { Redirect } from 'react-router-dom';
 
 
-const SERVER_URL = "http://10.22.81.241:3000";
-
 class Login extends Component {
 
 	constructor(props) {
@@ -62,7 +60,7 @@ class Login extends Component {
 				fullWidth
 				variant="contained"
 				color="primary"
-				onClick={() => this.postApi({username: document.querySelector("#username").value}, SERVER_URL+"/api/userdata/", "GET")}
+				onClick={() => this.postApi({username: document.querySelector("#username").value}, this.props.server+"api/userdata/", "GET")}
 			>
 				Logg inn
 			</Button>
@@ -88,7 +86,7 @@ class Login extends Component {
 				fullWidth
 				variant="contained"
 				color="primary"
-				onClick={() => this.postApi({username: document.querySelector("#username").value}, SERVER_URL+"/api/users/add", "POST")}
+				onClick={() => this.postApi({username: document.querySelector("#username").value}, this.props.server+"api/users/add", "POST")}
 			>
 				Lag bruker
 			</Button>

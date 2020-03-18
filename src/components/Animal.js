@@ -6,7 +6,6 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { Container, Grid, CardHeader, CardMedia, CardActions, CardContent } from "@material-ui/core";
 
-const SERVER_URL = "http://10.22.81.241:3000/"
 
 class Animal extends Component {
 
@@ -15,7 +14,7 @@ class Animal extends Component {
     this.state = {
       animals: []
     }
-    this.fetchAnimals(SERVER_URL);
+    this.fetchAnimals(props.server);
   }
 
   fetchAnimals(url) {
@@ -40,7 +39,7 @@ class Animal extends Component {
     const items = this.state.animals.map((item) => 
       <Card>
         <CardHeader title={item["name"]}/>
-        <CardMedia style={{height: 0, paddingTop: '56.25%'}} image={SERVER_URL+"public/"+item["id"]+".png"}></CardMedia>
+        <CardMedia style={{height: 0, paddingTop: '56.25%'}} image={this.props.server+"public/"+item["id"]+".png"}></CardMedia>
   <CardContent>Pris: {item["price"]}</CardContent>
         <CardActions>
           <Button size="small" color="primary">Kjøp</Button>
