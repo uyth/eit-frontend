@@ -72,7 +72,7 @@ function App() {
     if (bruker != {}) {
       heartbeatApi(bruker.id)
     }
-  }, 60000);
+  }, 5000);
 
   const MainScreen = <div className="App">
     <AppBar position="static">
