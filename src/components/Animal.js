@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import './Animal.css'
 
 import Card from '@material-ui/core/Card';
-
 import Button from '@material-ui/core/Button';
 import { Container, Grid, CardHeader, CardMedia, CardActions, CardContent } from "@material-ui/core";
 
@@ -12,11 +12,16 @@ class Animal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      animals: []
+      animals: [],
+      user:{}
     }
-    this.fetchAnimals(props.server);
+    console.log(this.props.bruker.id)
   }
+  componentDidMount() {
+      this.fetchUser(this.props.server, this.props.bruker.id)
+      this.fetchAnimals(this.props.server);
 
+  }
   fetchAnimals(url) {
 		fetch(url+"api/items", {
 			method: "GET",
@@ -34,29 +39,55 @@ class Animal extends Component {
 			// location.reload()
 		})
 	}
+  fetchUser(url, id) {
+		fetch(url+"api/user/"+id, {
+			method: "GET",
+		}).then(res => {
+			if (res.status === 500) {
+				res.json().then(data => {
+					this.setState({error: data.error})
+				});
+			}else {
+				res.json().then(data => {
+          console.log("user",data.user)
+          this.setState({user: data.user})
+				});
+			}
+		})
+	}
 
   render() {
-    const items = this.state.animals.map((item) => 
-      <Card>
+    const inventory = this.state.user.inventory;
+    const items = this.state.animals.map((item) =>
+      <Card variant="outlined"
+      className={(inventory.includes(item.id) ? '' : 'notBought ') + ("item_" + item.cat)}
+      style={{width:'40vw', maxWidth:'160px'}}>
         <CardHeader title={item["name"]}/>
-        <CardMedia style={{height: 0, paddingTop: '56.25%'}} image={this.props.server+"public/"+item["id"]+".png"}></CardMedia>
-  <CardContent>Pris: {item["price"]}</CardContent>
+        <CardMedia style={{height: 0, paddingTop: '56.25%', backgroundSize:'contain'}} image={this.props.server+"public/"+item["id"]+".png"}></CardMedia>
+          <CardContent>
+            Pris: {item["price"]}
+          </CardContent>
         <CardActions>
-          <Button size="small" color="primary">Kjøp</Button>
-          <Button size="small" color="primary">Velg</Button>
+        {
+            inventory.includes(item.id) ?
+            <Button size="small" color="primary">Velg</Button> :
+            <Button size="small" color="primary">Kjøp</Button>
+        }
         </CardActions>
       </Card>
     );
+
     return this.props.bruker?.id ? <div>
         <h2>Velg dyr</h2>
         <Container maxWidth="md">
-        <Grid container spacing={5} alignItems="flex-end">
+        <Grid container spacing={5} justify="center"
+  alignItems="flex-start" style={{padding:'20px 0 100px 0'}}>
           {items}
         </Grid>
       </Container>
       </div> : <Redirect to="/login"/>;
     }
   }
-  
+
 
 export default Animal;
