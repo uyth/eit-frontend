@@ -35,3 +35,32 @@
     border-radius: 0%;
     height: 100%;
 }
+
+.userCard {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding:10px;
+}
+
+.userHeader {
+    margin-bottom: 0;
+}
+
+.userSubHeader {
+    margin-top: 0;
+    color: #9e9e9e
+}
+
+.userText {
+    margin-left: 10px;
+    /* display: flex; */
+}
+
+.userInfo{
+    display:flex;
+    align-items: baseline;
+}
+.activeAnimalContainer {
+    align-self: center;
+}
