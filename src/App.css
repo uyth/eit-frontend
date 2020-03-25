@@ -14,3 +14,24 @@
     transform: rotate(360deg);
   }
 }
+
+/* .selectedItem {
+
+} */
+
+.content {
+    display:flex;
+}
+
+.inventoryContainer {
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+}
+
+.inventoryItem {
+    border-radius: 0%;
+    height: 100%;
+}
