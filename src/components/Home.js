@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from "react";
 import { Redirect } from "react-router-dom";
-import { Card, Slider, Avatar, Box, CardHeader, CardMedia, CardContent, List, ListItem, ListItemText } from "@material-ui/core";
+import { Card, Badge, Slider, Avatar, Box, CardHeader, CardMedia, CardContent, List, ListItem, ListItemText } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 
 function Home(props) {
     const [user, setUser] = useState({id:0});
     const [update, setUpdate] = useState(true);
     const [items, setItems] = useState([]);
+    const [forestCell, setCell] = useState(1);
 
     useEffect(() => {
         fetch(props.server+"api/items", {
@@ -35,7 +36,6 @@ function Home(props) {
 			}else {
 				res.json().then(data => {
           setUpdate(false)
-          console.log("_user:",data)
           setUser(data.user)
 				});
 			}
@@ -71,9 +71,20 @@ function Home(props) {
     const activeItem = items.filter(x => x.id === user?.active?.id).map(item =>
         <Card className="SelectedItem">
             <CardContent className="content">
+                <Badge
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    badgeContent={user.active.cell ? String(parseInt(user.active.cell)+1) : ''}
+                    invisible={!user.active.cell}
+                    color="primary"
+                    >
                 <CardMedia style={{width: '50px', backgroundSize:'contain'}} image={props.server +"public/"+item.id+".png"}></CardMedia>
+            </Badge>
             <p style={{marginLeft:'20px'}}>{item.name}</p>
         </CardContent>
+
         </Card>
     )
     return props.bruker?.id ?
@@ -92,18 +103,19 @@ function Home(props) {
     </Box>
     </Card>
     <Box style={{marginLeft:'20px', marginRight:'20px'}}>
-        <h3>Velg skogcelle</h3>
+        <h3>Velg skogområde</h3>
         <Slider
-            defaultValue={user.active.cell}
+            value={forestCell}
             step={1}
             marks={[{value:20}, {value:40}, {value:60}]}
             min={1}
             max={64}
-            onChange={() => {console.log("change!")}}
-            valueLabelDisplay="on"
+            id="testId"
+            onChange={(e, v) => {setCell(v)}}
+            valueLabelDisplay="auto"
         />
-        <Button variant="outlined" color="primary">
-          Velg
+        <Button variant="outlined" color="primary" onClick={() => postApi('api/forest/place-animal', {'uid':user.id, 'itemid':user.active.id, 'cell':forestCell-1})}>
+          Velg område {forestCell}
         </Button>
     </Box>
     <h2>Inventory</h2>
