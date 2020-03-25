@@ -38,12 +38,6 @@ const useStyles = makeStyles({
 });
 
 
-function heartbeatApi(uid) {
-  let date = new Date().getTime();
-  fetch(SERVER_URL+"api/heartbeat?uid="+uid+"&date="+date, {method: "POST"}).then(res => {
-    res.json().then(data => console.log(data))}  
-  )
-}
 
 function App() {
 
@@ -51,7 +45,7 @@ function App() {
     setValue(newValue);
   };
   const [value, setValue] = useState("home");
-
+  const [users, setUsers] = useState(0);
   const classes = useStyles();
 
   const [bruker, setBruker] = useState(
@@ -62,6 +56,16 @@ function App() {
       localStorage.setItem("bruker", JSON.stringify(bruker))
   }, [bruker]);
 
+  const heartbeatApi = function(uid) {
+      let date = new Date().getTime();
+      fetch(SERVER_URL+"api/heartbeat?uid="+uid+"&date="+date, {method: "POST"}).then(res => {
+          res.json().then(data =>{
+              // console.log(data.users)
+              setUsers(data.users);
+          }
+          )}
+      )
+  }
   const signinHandler = (bruker) => {
     localStorage.setItem("bruker", JSON.stringify(bruker));
     setBruker(bruker);
@@ -76,10 +80,11 @@ function App() {
 
   const MainScreen = <div className="App">
     <AppBar position="static">
-      <Toolbar>
+      <Toolbar style={{display:'flex', justifyContent:'space-between'}}>
         <Typography variant="h6" className={classes.title}>
           Klimagotchi
         </Typography>
+        {users ? <p style={{color:'#9fa8da'}}>{users} brukere pålogget</p> : ''}
       </Toolbar>
     </AppBar>
     <Router>
