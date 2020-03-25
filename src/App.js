@@ -8,14 +8,11 @@ import {
   Link,
 } from "react-router-dom";
 
-import HomeIcon from '@material-ui/icons/Home';
-import PetsIcon from '@material-ui/icons/Pets';
-import PersonIcon from '@material-ui/icons/Person';
-
 import { makeStyles } from '@material-ui/core/styles';
-import { BottomNavigation, AppBar, Toolbar, Button, Typography } from '@material-ui/core';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import Login from './components/Login/Login';
+import Logout from './components/Logout';
+import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Animal from './components/Animal';
 
@@ -26,6 +23,7 @@ const useStyles = makeStyles({
     width: '100%',
     position: 'fixed',
     bottom: 0,
+    background: 'white',
   },
   card: {
     height: '100%',
@@ -47,13 +45,10 @@ function heartbeatApi(uid) {
 
 function App() {
 
-  const handleMenuChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  const [value, setValue] = useState("home");
-
   const classes = useStyles();
+  const [value, setValue] = useState("home");
   
+
   const [bruker, setBruker] = useState(
     JSON.parse(localStorage.getItem("bruker")) || {}
   );
@@ -68,13 +63,24 @@ function App() {
     heartbeatApi(bruker.id);
   }
 
+  const logoutHandler = () => {
+    localStorage.removeItem("bruker");
+    setBruker({});
+    setValue("home");
+    console.log("logger ut");
+  }
+
+  const handleMenuChange = (menuChoice) => {
+    setValue(menuChoice);
+  }
+
   setInterval(() => {
     if (bruker != {}) {
       heartbeatApi(bruker.id)
     }
   }, 5000);
 
-  const MainScreen = <div className="App">
+  return <div className="App">
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
@@ -83,29 +89,7 @@ function App() {
       </Toolbar>
     </AppBar>
     <Router>
-      <BottomNavigation value={value} onChange={handleMenuChange} showLabels className={classes.stickToBottom}>
-      <BottomNavigationAction 
-        component={Link}
-        to="/"
-        label="Home"
-        value="home"
-        icon={<HomeIcon/>}
-      />
-      <BottomNavigationAction 
-        component={Link}
-        to="/dyr"
-        label="Dyr"
-        value="customize"
-        icon={<PetsIcon/>}
-      />
-      <BottomNavigationAction 
-        component={Link}
-        to="/login"
-        label="Login"
-        value="login"
-        icon={<PersonIcon/>}
-      />
-    </BottomNavigation>
+      <NavBar handler={handleMenuChange} bruker={bruker} classes={classes} value={value}/>
 
       {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
@@ -116,14 +100,15 @@ function App() {
         <Route path="/login">
           <Login handler={signinHandler} server={SERVER_URL} className="display"/>
         </Route>
+        <Route path="/logout">
+          <Logout handler={logoutHandler} className="display"/>
+        </Route>
         <Route path="/">
           <Home bruker={bruker} server={SERVER_URL} className="display"/>
         </Route>
       </Switch>
-  </Router>
+    </Router>
   </div>;
-
-  return MainScreen;
 }
 
 export default App;
